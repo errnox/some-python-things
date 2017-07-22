@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+
+dataDir='data'
+dataFileBaseName='data'
+
+# Number of profiling runs
+profilingRuns=50
+# Number of samples
+samples=50
+# n top runs to profile
+topOnes=3
+# Number of individual profiling runs
+individualRuns=2
+
+
+# Clear the data of potential previous runs
+rm -rf "./$dataDir"
+mkdir "./$dataDir"
+
+# Do the profiling
+for ((i=0; i<$profilingRuns; i++));
+do
+  for ((j=0; i<$samples; i++));
+  do
+    python -m timeit -r $topOnes -n $individualRuns '[dict(a = 1) for i in range(1000)]' |
+    grep -rinso '\: \w*\b' | cut -d' ' -f2;
+  done | sort -rn > "./$dataDir/$dataFileBaseName$i";
+done

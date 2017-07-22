@@ -1,0 +1,28 @@
+#!/usr/bin/env python
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+data_file = './data/data'
+data = [];
+
+tmp = [];
+# Fetch the data
+with open(data_file, 'r') as file:
+    for line in file:
+        tmp = line.split(',')
+        data.append(tmp[0])
+
+# data.reverse()
+
+
+# Plot the data
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+
+ax.plot(data)
+
+
+plt.show()

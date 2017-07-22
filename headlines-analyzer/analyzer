@@ -1,0 +1,53 @@
+#!/usr/bin/env python
+
+import operator
+from pprint import pprint  # DEBUG
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+## Fetch the data
+
+data_file = 'headlines'
+titles = []
+
+with open(data_file, 'r') as file:
+    for line in file:
+        titles.append((line, len(line)))
+
+
+titles = sorted(titles, key=lambda elem: (elem[1], elem[0]), reverse=True)
+# pprint(titles)  # DEBUG
+
+lengths = [i[1] for i in titles]
+# pprint(lengths)  # DEBUG
+
+
+## Plot
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+
+
+# Plot bars
+# ax.plot(lengths)
+BAR_WIDTH = 20
+for i, length in enumerate(lengths):
+    ax.bar(i * BAR_WIDTH, length, BAR_WIDTH, color='#00ffaa',
+           edgecolor='#000055', alpha=.5)
+
+# Plot a series of lines
+stretch= [i * BAR_WIDTH + (BAR_WIDTH / 2) for i, j in enumerate(lengths)]
+ax.plot(stretch, lengths, '-r', linewidth=3, alpha=.5)
+
+# Plot the mean line
+mean = np.mean(lengths)
+mean_line = [mean for i in lengths]
+ax.plot(stretch, mean_line, '-g', linewidth=3, alpha=1)
+
+# derivation = [mean / i for i in lengths]
+# ax.plot(stretch, derivation, '-b', linewidth=3, alpha=.5)
+
+
+plt.show()
